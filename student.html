@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Student Table</title>
+    <style>
+        * {
+            margin: 0px;
+
+        }
+
+        .bg-container {
+            background-color: lightsalmon;
+            padding: 15px;
+            background-size:cover;
+            
+        }
+
+        .heading {
+            font-size: 28px;
+            color: blue;
+            font-family: "Roboto";
+            padding-bottom: 10px;
+        }
+        .button{
+    
+            color:white;
+            margin-bottom:25px;
+            background-color: grey;
+            font-family: "Roboto";
+            font-size: 15px;
+            border-width: 0px;
+            border-radius: 4px;
+            width: 35%;
+            align-self: center;
+            
+        }
+        
+
+        table {
+            border:2px solid black;
+            width: 100%;
+        }
+        .table{
+            font-family:"Roboto";
+            color:black;
+            margin-bottom:5px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            font-family:Roboto;
+            font-size:14px;
+            
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .buttonContainer{
+            display: flex;
+            flex-direction:column;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="heading">Create Student Table</h1>
+                    <form class="form-container">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name"><br><br>
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age"><br><br>
+            <label for="grade">Grade:</label>
+            <input type="text" id="grade" name="grade"><br><br>
+            <input type="button" value="Add Student" onclick="addStudent()" class="button">
+        </form>
+        
+        <h2 class="table">Student Table</h2>
+        <table id="studentTable">
+            <tr>
+                <th>S.No</th>
+                <th>Select</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Grade</th>
+            </tr>
+        </table>
+        <br>
+        <div class="buttonContainer">
+        <input type="button" value="Delete Selected (0)" onclick="deleteSelected()" id="deleteSelectedButton" class="button">
+        <input type="button" value="Delete All" onclick="deleteAll()" class="button">
+        <input type="button" value="DeleteCount" onclick="updateDeleteSelectedButton()" id="deleteSelectedButton" class="button">
+        </div>
+
+        <script>
+            var serialNumber = 0;
+
+            function addStudent() {
+                var name = document.getElementById("name").value;
+                var age = document.getElementById("age").value;
+                var grade = document.getElementById("grade").value;
+                if (name === "" || age === "" || grade === "") {
+                    alert("Please fill in all fields.");
+                } else {
+                    var table = document.getElementById("studentTable");
+                    var row = table.insertRow(-1);
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    var cell4 = row.insertCell(3);
+                    var cell5 = row.insertCell(4);
+                    cell1.innerHTML = ++serialNumber;
+                    cell2.innerHTML = '<input type="checkbox">';
+                    cell3.innerHTML = name;
+                    cell4.innerHTML = age;
+                    cell5.innerHTML = grade;
+                }
+            }
+
+            function deleteSelected() {
+                var table = document.getElementById("studentTable");
+                var checkboxes = table.getElementsByTagName("input");
+                var selectedRows = [];
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].type === "checkbox" && checkboxes[i].checked) {
+                        selectedRows.push(checkboxes[i].parentNode.parentNode);
+                    }
+                }
+                if (selectedRows.length === 0) {
+                    alert("Please select at least one row to delete.");
+                } else {
+                    for (var i = 0; i < selectedRows.length; i++) {
+                        table.deleteRow(selectedRows[i].rowIndex);
+                    }
+                    updateDeleteSelectedButton();
+                }
+            }
+
+            function deleteAll() {
+                var table = document.getElementById("studentTable");
+                while (table.rows.length > 1) {
+                    table.deleteRow(1);
+                }
+                updateDeleteSelectedButton();
+            }
+
+            function updateDeleteSelectedButton() {
+                var table = document.getElementById("studentTable");
+                var checkboxes = table.getElementsByTagName("input");
+                var count = 0;
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].type === "checkbox" && checkboxes[i].checked) {
+                        count++;
+                    }
+                    
+                }
+                var button = document.getElementById("deleteSelectedButton");
+                button.value = "Delete Selected (" + count + ")";
+            }
+        </script>
+    </div>
+    </div>
+    </div>
+    </div>
+
+</body>
+
+</html>
